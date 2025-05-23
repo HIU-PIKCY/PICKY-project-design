@@ -11,441 +11,445 @@ classDiagram
     %% ERD의 12개 테이블에 대응하는 엔티티 클래스
     %% ==========================================
     class User {
-        -Long userId
-        -String username
-        -String nickname
-        -String password
-        -String profileImage
-        -Enum loginType
-        -LocalDateTime createdAt
-        -LocalDateTime updatedAt
-        +validatePassword() boolean
-        +checkDuplicateUsername() boolean
-        +updateProfile() void
-        +changePassword() void
+        - userId : Long
+        - username : String
+        - nickname : String
+        - password : String
+        - profileImage : String
+        - loginType : LoginType
+        - createdAt : LocalDateTime
+        - updatedAt : LocalDateTime
+        + validatePassword() Boolean
+        + checkDuplicateUsername() Boolean
+        + updateProfile() Void
+        + changePassword() Void
     }
     class UserStats {
-        -Long userStatsId
-        -Long userId
-        -Integer totalBooks
-        -Integer totalQuestions
-        -Integer totalAnswers
-        +updateStatistics() void
-        +getActivitySummary() Map
-        +incrementBookCount() void
-        +incrementQuestionCount() void
-        +incrementAnswerCount() void
+        - userStatsId : Long
+        - userId : Long
+        - totalBooks : Integer
+        - totalQuestions : Integer
+        - totalAnswers : Integer
+        + updateStatistics() Void
+        + getActivitySummary() Map~String, Object~
+        + incrementBookCount() Void
+        + incrementQuestionCount() Void
+        + incrementAnswerCount() Void
     }
     class Book {
-        -Long bookId
-        -String title
-        -String author
-        -String publisher
-        -String isbn
-        -String coverImage
-        -LocalDateTime publishDate
-        +searchByTitle() List
-        +searchByAuthor() List
-        +searchByTitleAndAuthor() List
-        +getBookDetail() Book
+        - bookId : Long
+        - title : String
+        - author : String
+        - publisher : String
+        - isbn : String
+        - coverImage : String
+        - publishDate : LocalDateTime
+        + searchByTitle() List~Book~
+        + searchByAuthor() List~Book~
+        + searchByTitleAndAuthor() List~Book~
+        + getBookDetail() Book
     }
     class BookShelf {
-        -Long bookShelfId
-        -Long userId
-        -String domain
-        +createShelf() BookShelf
-        +updateShelf() void
-        +deleteShelf() void
+        - bookShelfId : Long
+        - userId : Long
+        - domain : String
+        + createShelf() BookShelf
+        + updateShelf() Void
+        + deleteShelf() Void
     }
     class MyBook {
-        -Long myBookId
-        -Long userId
-        -Long bookId
-        -Long bookShelfId
-        -String bookStatus
-        +updateReadingStatus() void
-        +deleteMyBook() void
-        +getMyBooksByStatus() List
-        +getRecentBooks() List
-        +addToShelf() void
-        +removeFromShelf() void
+        - myBookId : Long
+        - userId : Long
+        - bookId : Long
+        - bookShelfId : Long
+        - bookStatus : String
+        + updateReadingStatus() Void
+        + deleteMyBook() Void
+        + getMyBooksByStatus() List~MyBook~
+        + getRecentBooks() List~MyBook~
+        + addToShelf() Void
+        + removeFromShelf() Void
     }
     class AiQuestionTemplate {
-        -Long templateId
-        -String templateContent
-        -Boolean isActive
-        -LocalDateTime createdAt
-        -LocalDateTime updatedAt
-        -Long systemId
-        -Long myBookId
-        -Enum questionType
-        +getTemplatesByCategory() List
-        +generateQuestion() String
-        +getActiveTemplates() List
+        - templateId : Long
+        - templateContent : String
+        - isActive : Boolean
+        - createdAt : LocalDateTime
+        - updatedAt : LocalDateTime
+        - systemId : Long
+        - myBookId : Long
+        - questionType : QuestionType
+        + getTemplatesByCategory() List~AiQuestionTemplate~
+        + generateQuestion() String
+        + getActiveTemplates() List~AiQuestionTemplate~
     }
     class Question {
-        -Long questionId
-        -Long myBookId
-        -String questionContent
-        -Integer pageNum
-        -Long questionTemplateId
-        -Boolean isAIGenerated
-        -LocalDateTime createdAt
-        -LocalDateTime updatedAt
-        -Integer answerCount
-        -Integer likesCount
-        +getQuestionsByBook() List
-        +sortByLatest() List
-        +sortByLikes() List
-        +validateQuestion() boolean
-        +deleteQuestion() void
+        - questionId : Long
+        - myBookId : Long
+        - questionContent : String
+        - pageNum : Integer
+        - questionTemplateId : Long
+        - isAIGenerated : Boolean
+        - createdAt : LocalDateTime
+        - updatedAt : LocalDateTime
+        - answerCount : Integer
+        - likesCount : Integer
+        + getQuestionsByBook() List~Question~
+        + sortByLatest() List~Question~
+        + sortByLikes() List~Question~
+        + validateQuestion() Boolean
+        + deleteQuestion() Void
     }
     class QuestionLikes {
-        -Long questionLikeId
-        -Long userId
-        -Long questionId
-        -LocalDateTime createdAt
-        +likeQuestion() void
-        +unlikeQuestion() void
-        +isLikedByUser() boolean
-        +getLikeCount() int
+        - questionLikeId : Long
+        - userId : Long
+        - questionId : Long
+        - createdAt : LocalDateTime
+        + likeQuestion() Void
+        + unlikeQuestion() Void
+        + isLikedByUser() Boolean
+        + getLikeCount() Integer
     }
     class Answer {
-        -Long answerId
-        -Long questionId
-        -Long userId
-        -Long answerTemplateId
-        -String answerContent
-        -Boolean isAIGenerated
-        -LocalDateTime createdAt
-        -LocalDateTime updatedAt
-        +createAnswer() void
-        +updateAnswer() void
-        +deleteAnswer() void
-        +getAnswerByQuestion() Answer
+        - answerId : Long
+        - questionId : Long
+        - userId : Long
+        - answerTemplateId : Long
+        - answerContent : String
+        - isAIGenerated : Boolean
+        - createdAt : LocalDateTime
+        - updatedAt : LocalDateTime
+        + createAnswer() Void
+        + updateAnswer() Void
+        + deleteAnswer() Void
+        + getAnswerByQuestion() Answer
     }
     class AiAnswerTemplate {
-        -Long aiTemplateId
-        -String templateContent
-        -Boolean isActive
-        -LocalDateTime createdAt
-        -LocalDateTime updatedAt
-        +getActiveTemplates() List
-        +generateAnswerFromTemplate() String
-        +getTemplateByCategory() AiAnswerTemplate
+        - aiTemplateId : Long
+        - templateContent : String
+        - isActive : Boolean
+        - createdAt : LocalDateTime
+        - updatedAt : LocalDateTime
+        + getActiveTemplates() List~AiAnswerTemplate~
+        + generateAnswerFromTemplate() String
+        + getTemplateByCategory() AiAnswerTemplate
     }
     class Notification {
-        -Long notificationId
-        -Long userId
-        -String notificationType
-        -String content
-        -Boolean isRead
-        -Long questionId
-        -Long answerId
-        +markAsRead() void
-        +getUnreadCount() int
-        +createAnswerNotification() void
-        +getNotificationsByUser() List
+        - notificationId : Long
+        - userId : Long
+        - notificationType : String
+        - content : String
+        - isRead : Boolean
+        - questionId : Long
+        - answerId : Long
+        + markAsRead() Void
+        + getUnreadCount() Integer
+        + createAnswerNotification() Void
+        + getNotificationsByUser() List~Notification~
     }
     class System {
-        -Long systemId
-        -String systemKey
-        -String configValue
-        -Boolean encrypted
-        -LocalDateTime lastUpdated
-        +getConfig() String
-        +updateConfig() void
+        - systemId : Long
+        - systemKey : String
+        - configValue : String
+        - encrypted : Boolean
+        - lastUpdated : LocalDateTime
+        + getConfig() String
+        + updateConfig() Void
     }
     %% ==========================================
     %% CONTROLLER LAYER (Presentation Layer)
     %% REST API 엔드포인트를 처리하는 컨트롤러 클래스
     %% ==========================================
     class AuthController {
-        -UserService userService
-        +register() ResponseEntity
-        +login() ResponseEntity
-        +socialLogin() ResponseEntity
-        +logout() ResponseEntity
-        +validateUsername() ResponseEntity
+        - userService : UserService
+        + register() ResponseEntity~Object~
+        + login() ResponseEntity~Object~
+        + socialLogin() ResponseEntity~Object~
+        + logout() ResponseEntity~Object~
+        + validateUsername() ResponseEntity~Object~
     }
     class UserController {
-        -UserService userService
-        -UserStatsService userStatsService
-        +getProfile() ResponseEntity
-        +updateProfile() ResponseEntity
-        +changePassword() ResponseEntity
-        +uploadProfileImage() ResponseEntity
-        +getActivitySummary() ResponseEntity
+        - userService : UserService
+        - userStatsService : UserStatsService
+        + getProfile() ResponseEntity~Object~
+        + updateProfile() ResponseEntity~Object~
+        + changePassword() ResponseEntity~Object~
+        + uploadProfileImage() ResponseEntity~Object~
+        + getActivitySummary() ResponseEntity~Object~
     }
     class BookController {
-        -BookService bookService
-        -MyBookService myBookService
-        -BookShelfService bookShelfService
-        +searchBooks() ResponseEntity
-        +searchByTitle() ResponseEntity
-        +searchByAuthor() ResponseEntity
-        +searchByTitleAndAuthor() ResponseEntity
-        +getBookDetail() ResponseEntity
-        +addToMyBooks() ResponseEntity
-        +removeFromMyBooks() ResponseEntity
-        +updateReadingStatus() ResponseEntity
-        +getMyBooks() ResponseEntity
-        +getMyBooksByStatus() ResponseEntity
-        +manageShelves() ResponseEntity
+        - bookService : BookService
+        - myBookService : MyBookService
+        - bookShelfService : BookShelfService
+        + searchBooks() ResponseEntity~Object~
+        + searchByTitle() ResponseEntity~Object~
+        + searchByAuthor() ResponseEntity~Object~
+        + searchByTitleAndAuthor() ResponseEntity~Object~
+        + getBookDetail() ResponseEntity~Object~
+        + addToMyBooks() ResponseEntity~Object~
+        + removeFromMyBooks() ResponseEntity~Object~
+        + updateReadingStatus() ResponseEntity~Object~
+        + getMyBooks() ResponseEntity~Object~
+        + getMyBooksByStatus() ResponseEntity~Object~
+        + manageShelves() ResponseEntity~Object~
     }
     class QuestionController {
-        -QuestionService questionService
-        -AiQuestionTemplateService aiQuestionTemplateService
-        -QuestionLikesService questionLikesService
-        -AIService aiService
-        +getQuestions() ResponseEntity
-        +getQuestionsByBook() ResponseEntity
-        +createQuestion() ResponseEntity
-        +deleteQuestion() ResponseEntity
-        +generateAIQuestion() ResponseEntity
-        +getQuestionTemplates() ResponseEntity
-        +likeQuestion() ResponseEntity
-        +unlikeQuestion() ResponseEntity
-        +getQuestionLikes() ResponseEntity
-        +sortQuestions() ResponseEntity
+        - questionService : QuestionService
+        - aiQuestionTemplateService : AiQuestionTemplateService
+        - questionLikesService : QuestionLikesService
+        - aiService : AIService
+        + getQuestions() ResponseEntity~Object~
+        + getQuestionsByBook() ResponseEntity~Object~
+        + createQuestion() ResponseEntity~Object~
+        + deleteQuestion() ResponseEntity~Object~
+        + generateAIQuestion() ResponseEntity~Object~
+        + getQuestionTemplates() ResponseEntity~Object~
+        + likeQuestion() ResponseEntity~Object~
+        + unlikeQuestion() ResponseEntity~Object~
+        + getQuestionLikes() ResponseEntity~Object~
+        + sortQuestions() ResponseEntity~Object~
     }
     class AnswerController {
-        -AnswerService answerService
-        -AIService aiService
-        +createAnswer() ResponseEntity
-        +updateAnswer() ResponseEntity
-        +deleteAnswer() ResponseEntity
-        +generateAIAnswer() ResponseEntity
-        +getAnswerByQuestion() ResponseEntity
+        - answerService : AnswerService
+        - aiService : AIService
+        + createAnswer() ResponseEntity~Object~
+        + updateAnswer() ResponseEntity~Object~
+        + deleteAnswer() ResponseEntity~Object~
+        + generateAIAnswer() ResponseEntity~Object~
+        + getAnswerByQuestion() ResponseEntity~Object~
     }
     class ActivityController {
-        -ActivityService activityService
-        -UserStatsService userStatsService
-        +getMyActivities() ResponseEntity
-        +getMyQuestions() ResponseEntity
-        +getMyAnswers() ResponseEntity
-        +getMyLikedQuestions() ResponseEntity
+        - activityService : ActivityService
+        - userStatsService : UserStatsService
+        + getMyActivities() ResponseEntity~Object~
+        + getMyQuestions() ResponseEntity~Object~
+        + getMyAnswers() ResponseEntity~Object~
+        + getMyLikedQuestions() ResponseEntity~Object~
     }
     class NotificationController {
-        -NotificationService notificationService
-        +getNotifications() ResponseEntity
-        +markAsRead() ResponseEntity
-        +getUnreadCount() ResponseEntity
-        +markAllAsRead() ResponseEntity
+        - notificationService : NotificationService
+        + getNotifications() ResponseEntity~Object~
+        + markAsRead() ResponseEntity~Object~
+        + getUnreadCount() ResponseEntity~Object~
+        + markAllAsRead() ResponseEntity~Object~
     }
     %% ==========================================
     %% SERVICE LAYER (Business Logic Layer)
     %% 비즈니스 로직을 처리하는 서비스 클래스
     %% ==========================================
     class UserService {
-        -UserRepository userRepository
-        +registerUser() User
-        +loginUser() User
-        +socialLogin() User
-        +updateUserProfile() User
-        +changePassword() void
-        +validateUsername() boolean
-        +uploadProfileImage() String
-        +getUserById() User
+        - userRepository : UserRepository
+        + registerUser() User
+        + loginUser() User
+        + socialLogin() User
+        + updateUserProfile() User
+        + changePassword() Void
+        + validateUsername() Boolean
+        + uploadProfileImage() String
+        + getUserById() User
     }
     class UserStatsService {
-        -UserStatsRepository userStatsRepository
-        +updateUserStatistics() void
-        +getActivitySummary() UserStats
-        +incrementBookCount() void
-        +incrementQuestionCount() void
-        +incrementAnswerCount() void
-        +createUserStats() UserStats
+        - userStatsRepository : UserStatsRepository
+        + updateUserStatistics() Void
+        + getActivitySummary() UserStats
+        + incrementBookCount() Void
+        + incrementQuestionCount() Void
+        + incrementAnswerCount() Void
+        + createUserStats() UserStats
     }
     class BookService {
-        -BookRepository bookRepository
-        +searchBooks() List
-        +searchByTitle() List
-        +searchByAuthor() List
-        +searchByTitleAndAuthor() List
-        +getBookById() Book
-        +getBookDetail() Book
+        - bookRepository : BookRepository
+        + searchBooks() List~Book~
+        + searchByTitle() List~Book~
+        + searchByAuthor() List~Book~
+        + searchByTitleAndAuthor() List~Book~
+        + getBookById() Book
+        + getBookDetail() Book
     }
     class BookShelfService {
-        -BookShelfRepository bookShelfRepository
-        +createShelf() BookShelf
-        +updateShelf() BookShelf
-        +deleteShelf() void
-        +getShelvesByUser() List
-        +getShelfById() BookShelf
+        - bookShelfRepository : BookShelfRepository
+        + createShelf() BookShelf
+        + updateShelf() BookShelf
+        + deleteShelf() Void
+        + getShelvesByUser() List~BookShelf~
+        + getShelfById() BookShelf
     }
     class MyBookService {
-        -MyBookRepository myBookRepository
-        -UserStatsService userStatsService
-        -NotificationService notificationService
-        +addToMyBooks() MyBook
-        +removeFromMyBooks() void
-        +updateReadingStatus() MyBook
-        +getMyBooks() List
-        +getMyBooksByStatus() List
-        +getRecentBooks() List
-        +addToShelf() void
-        +removeFromShelf() void
+        - myBookRepository : MyBookRepository
+        - userStatsService : UserStatsService
+        - notificationService : NotificationService
+        + addToMyBooks() MyBook
+        + removeFromMyBooks() Void
+        + updateReadingStatus() MyBook
+        + getMyBooks() List~MyBook~
+        + getMyBooksByStatus() List~MyBook~
+        + getRecentBooks() List~MyBook~
+        + addToShelf() Void
+        + removeFromShelf() Void
     }
     class AiQuestionTemplateService {
-        -AiQuestionTemplateRepository aiQuestionTemplateRepository
-        +getTemplatesByCategory() List
-        +getActiveTemplates() List
-        +createTemplate() AiQuestionTemplate
-        +updateTemplate() AiQuestionTemplate
-        +getTemplateById() AiQuestionTemplate
+        - aiQuestionTemplateRepository : AiQuestionTemplateRepository
+        + getTemplatesByCategory() List~AiQuestionTemplate~
+        + getActiveTemplates() List~AiQuestionTemplate~
+        + createTemplate() AiQuestionTemplate
+        + updateTemplate() AiQuestionTemplate
+        + getTemplateById() AiQuestionTemplate
     }
     class QuestionService {
-        -QuestionRepository questionRepository
-        -NotificationService notificationService
-        -UserStatsService userStatsService
-        +createQuestion() Question
-        +deleteQuestion() void
-        +getQuestionsByBook() List
-        +getQuestionsByUser() List
-        +sortQuestions() List
-        +sortByLatest() List
-        +sortByLikes() List
-        +validateQuestion() boolean
-        +getQuestionById() Question
+        - questionRepository : QuestionRepository
+        - notificationService : NotificationService
+        - userStatsService : UserStatsService
+        + createQuestion() Question
+        + deleteQuestion() Void
+        + getQuestionsByBook() List~Question~
+        + getQuestionsByUser() List~Question~
+        + sortQuestions() List~Question~
+        + sortByLatest() List~Question~
+        + sortByLikes() List~Question~
+        + validateQuestion() Boolean
+        + getQuestionById() Question
     }
     class QuestionLikesService {
-        -QuestionLikesRepository questionLikesRepository
-        +likeQuestion() QuestionLikes
-        +unlikeQuestion() void
-        +isLikedByUser() boolean
-        +getLikeCount() int
-        +getPopularQuestions() List
-        +getLikedQuestionsByUser() List
+        - questionLikesRepository : QuestionLikesRepository
+        + likeQuestion() QuestionLikes
+        + unlikeQuestion() Void
+        + isLikedByUser() Boolean
+        + getLikeCount() Integer
+        + getPopularQuestions() List~Question~
+        + getLikedQuestionsByUser() List~Question~
     }
     class AnswerService {
-        -AnswerRepository answerRepository
-        -NotificationService notificationService
-        -UserStatsService userStatsService
-        +createAnswer() Answer
-        +updateAnswer() Answer
-        +deleteAnswer() void
-        +getAnswerByQuestion() Answer
-        +getAnswersByUser() List
-        +validateAnswer() boolean
+        - answerRepository : AnswerRepository
+        - notificationService : NotificationService
+        - userStatsService : UserStatsService
+        + createAnswer() Answer
+        + updateAnswer() Answer
+        + deleteAnswer() Void
+        + getAnswerByQuestion() Answer
+        + getAnswersByUser() List~Answer~
+        + validateAnswer() Boolean
     }
     class AIService {
-        -AiQuestionTemplateService aiQuestionTemplateService
-        -AiAnswerTemplateService aiAnswerTemplateService
-        +generateQuestion() String
-        +generateAnswer() String
-        +retryGeneration() String
-        +generateFromTemplate() String
-        +generateQuestionFromTemplate() String
-        +generateAnswerFromTemplate() String
+        - aiQuestionTemplateService : AiQuestionTemplateService
+        - aiAnswerTemplateService : AiAnswerTemplateService
+        + generateQuestion() String
+        + generateAnswer() String
+        + retryGeneration() String
+        + generateFromTemplate() String
+        + generateQuestionFromTemplate() String
+        + generateAnswerFromTemplate() String
     }
     class AiAnswerTemplateService {
-        -AiAnswerTemplateRepository aiAnswerTemplateRepository
-        +getActiveTemplates() List
-        +getTemplateByCategory() AiAnswerTemplate
-        +createTemplate() AiAnswerTemplate
-        +updateTemplate() AiAnswerTemplate
-        +getTemplateById() AiAnswerTemplate
+        - aiAnswerTemplateRepository : AiAnswerTemplateRepository
+        + getActiveTemplates() List~AiAnswerTemplate~
+        + getTemplateByCategory() AiAnswerTemplate
+        + createTemplate() AiAnswerTemplate
+        + updateTemplate() AiAnswerTemplate
+        + getTemplateById() AiAnswerTemplate
     }
     class ActivityService {
-        -QuestionRepository questionRepository
-        -AnswerRepository answerRepository
-        -QuestionLikesRepository questionLikesRepository
-        -UserStatsRepository userStatsRepository
-        +getMyQuestions() List
-        +getMyAnswers() List
-        +getMyLikedQuestions() List
-        +getActivitySummary() Map
-        +getUserActivity() Map
+        - questionRepository : QuestionRepository
+        - answerRepository : AnswerRepository
+        - questionLikesRepository : QuestionLikesRepository
+        - userStatsRepository : UserStatsRepository
+        + getMyQuestions() List~Question~
+        + getMyAnswers() List~Answer~
+        + getMyLikedQuestions() List~Question~
+        + getActivitySummary() Map~String, Object~
+        + getUserActivity() Map~String, Object~
     }
     class NotificationService {
-        -NotificationRepository notificationRepository
-        +createNotification() Notification
-        +createAnswerNotification() Notification
-        +markAsRead() void
-        +markAllAsRead() void
-        +getUnreadCount() int
-        +getNotificationsByUser() List
-        +deleteNotification() void
+        - notificationRepository : NotificationRepository
+        + createNotification() Notification
+        + createAnswerNotification() Notification
+        + markAsRead() Void
+        + markAllAsRead() Void
+        + getUnreadCount() Integer
+        + getNotificationsByUser() List~Notification~
+        + deleteNotification() Void
     }
+    %% ==========================================
+    %% REPOSITORY LAYER (Data Access Layer)
+    %% 데이터베이스 접근을 담당하는 레포지토리 클래스
+    %% ==========================================
     class UserRepository {
-        +findByUsername() Optional
-        +findById() Optional
-        +save() User
-        +existsByUsername() boolean
+        + findByUsername() Optional~User~
+        + findById() Optional~User~
+        + save() User
+        + existsByUsername() Boolean
     }
     class UserStatsRepository {
-        +findByUserId() Optional
-        +save() UserStats
-        +findById() Optional
+        + findByUserId() Optional~UserStats~
+        + save() UserStats
+        + findById() Optional~UserStats~
     }
     class BookRepository {
-        +findByTitleContaining() List
-        +findByAuthor() List
-        +findByTitleContainingOrAuthorContaining() List
-        +findById() Optional
-        +save() Book
+        + findByTitleContaining() List~Book~
+        + findByAuthor() List~Book~
+        + findByTitleContainingOrAuthorContaining() List~Book~
+        + findById() Optional~Book~
+        + save() Book
     }
     class BookShelfRepository {
-        +findByUserId() List
-        +findById() Optional
-        +save() BookShelf
-        +delete() void
+        + findByUserId() List~BookShelf~
+        + findById() Optional~BookShelf~
+        + save() BookShelf
+        + delete() Void
     }
     class MyBookRepository {
-        +findByUserIdAndBookId() Optional
-        +findByUserIdOrderByCreatedAtDesc() List
-        +findByUserIdAndBookStatus() List
-        +findByUserId() List
-        +save() MyBook
-        +delete() void
-        +findById() Optional
+        + findByUserIdAndBookId() Optional~MyBook~
+        + findByUserIdOrderByCreatedAtDesc() List~MyBook~
+        + findByUserIdAndBookStatus() List~MyBook~
+        + findByUserId() List~MyBook~
+        + save() MyBook
+        + delete() Void
+        + findById() Optional~MyBook~
     }
     class AiQuestionTemplateRepository {
-        +findByQuestionType() List
-        +findByIsActiveTrue() List
-        +findAll() List
-        +findById() Optional
-        +save() AiQuestionTemplate
+        + findByQuestionType() List~AiQuestionTemplate~
+        + findByIsActiveTrue() List~AiQuestionTemplate~
+        + findAll() List~AiQuestionTemplate~
+        + findById() Optional~AiQuestionTemplate~
+        + save() AiQuestionTemplate
     }
     class QuestionRepository {
-        +findByMyBookIdOrderByCreatedAtDesc() List
-        +findByMyBookId() List
-        +findByMyBookUserId() List
-        +findByMyBookUserIdOrderByCreatedAtDesc() List
-        +findById() Optional
-        +save() Question
-        +delete() void
+        + findByMyBookIdOrderByCreatedAtDesc() List~Question~
+        + findByMyBookId() List~Question~
+        + findByMyBookUserId() List~Question~
+        + findByMyBookUserIdOrderByCreatedAtDesc() List~Question~
+        + findById() Optional~Question~
+        + save() Question
+        + delete() Void
     }
     class QuestionLikesRepository {
-        +findByUserIdAndQuestionId() Optional
-        +countByQuestionId() int
-        +findByUserId() List
-        +findByUserIdOrderByCreatedAtDesc() List
-        +save() QuestionLikes
-        +delete() void
+        + findByUserIdAndQuestionId() Optional~QuestionLikes~
+        + countByQuestionId() Integer
+        + findByUserId() List~QuestionLikes~
+        + findByUserIdOrderByCreatedAtDesc() List~QuestionLikes~
+        + save() QuestionLikes
+        + delete() Void
     }
     class AnswerRepository {
-        +findByQuestionId() Optional
-        +findByQuestionMyBookUserId() List
-        +findByUserIdOrderByCreatedAtDesc() List
-        +findById() Optional
-        +save() Answer
-        +delete() void
+        + findByQuestionId() Optional~Answer~
+        + findByQuestionMyBookUserId() List~Answer~
+        + findByUserIdOrderByCreatedAtDesc() List~Answer~
+        + findById() Optional~Answer~
+        + save() Answer
+        + delete() Void
     }
     class AiAnswerTemplateRepository {
-        +findByIsActiveTrue() List
-        +findByCategory() List
-        +findById() Optional
-        +save() AiAnswerTemplate
+        + findByIsActiveTrue() List~AiAnswerTemplate~
+        + findByCategory() List~AiAnswerTemplate~
+        + findById() Optional~AiAnswerTemplate~
+        + save() AiAnswerTemplate
     }
     class NotificationRepository {
-        +findByUserIdOrderByCreatedAtDesc() List
-        +countByUserIdAndIsReadFalse() int
-        +findByUserId() List
-        +findById() Optional
-        +save() Notification
-        +delete() void
+        + findByUserIdOrderByCreatedAtDesc() List~Notification~
+        + countByUserIdAndIsReadFalse() Integer
+        + findByUserId() List~Notification~
+        + findById() Optional~Notification~
+        + save() Notification
+        + delete() Void
     }
 
     %% ==========================================
