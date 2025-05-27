@@ -2,7 +2,7 @@
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant AuthController
     participant UserService
     participant UserRepository
@@ -33,7 +33,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant BookController
     participant BookService
     participant BookRepository
@@ -75,7 +75,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant QuestionController
     participant AIService
     participant AiQuestionTemplateService
@@ -118,7 +118,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant AnswerController
     participant AnswerService
     participant AnswerRepository
@@ -149,7 +149,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant QuestionController
     participant QuestionLikesService
     participant QuestionLikesRepository
@@ -179,7 +179,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant ActivityController
     participant ActivityService
     participant QuestionRepository
@@ -212,7 +212,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant NotificationController
     participant NotificationService
     participant NotificationRepository
@@ -238,7 +238,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant AnswerController
     participant AIService
     participant AiAnswerTemplateService
@@ -279,7 +279,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant BookController
     participant MyBookService
     participant MyBookRepository
@@ -304,7 +304,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    actor Client
     participant BookController
     participant BookShelfService
     participant BookShelfRepository
