@@ -15,7 +15,7 @@ sequenceDiagram
     UserRepository-->>UserService: Boolean
     
     alt username exists
-        UserService-->>AuthController: throw DuplicateUsernameException
+        UserService-->>AuthController: validation failed
     else username available
         UserService->>UserRepository: save(user)
         UserRepository-->>UserService: User
@@ -42,9 +42,9 @@ sequenceDiagram
     participant UserStatsService
     participant UserStatsRepository
 
-    Client->>BookController: searchBooks(query)
-    BookController->>BookService: searchBooks(query)
-    BookService->>BookRepository: findByTitleContainingOrAuthorContaining(query)
+    Client->>BookController: searchByTitleAndAuthor(title, author)
+    BookController->>BookService: searchByTitleAndAuthor(title, author)
+    BookService->>BookRepository: findByTitleContainingOrAuthorContaining(title, author)
     BookRepository-->>BookService: List<Book>
     BookService-->>BookController: List<Book>
     BookController-->>Client: ResponseEntity<Object>
@@ -65,7 +65,7 @@ sequenceDiagram
         UserStatsService-->>MyBookService: void
         MyBookService-->>BookController: MyBook
     else MyBook already exists
-        MyBookService-->>BookController: throw DuplicateBookException
+        MyBookService-->>BookController: duplicate book error
     end
     
     BookController-->>Client: ResponseEntity<Object>
@@ -93,7 +93,7 @@ sequenceDiagram
     
     alt templates found
         AiQuestionTemplateService-->>AIService: List<AiQuestionTemplate>
-        AIService->>AIService: generateFromTemplate(template)
+        AIService->>AIService: generateQuestionFromTemplate(template)
         AIService-->>QuestionController: String
         
         QuestionController->>QuestionService: createQuestion(questionData)
@@ -108,7 +108,7 @@ sequenceDiagram
         QuestionService-->>QuestionController: Question
     else no templates
         AiQuestionTemplateService-->>AIService: empty List
-        AIService-->>QuestionController: throw NoTemplateException
+        AIService-->>QuestionController: generation failed
     end
     
     QuestionController-->>Client: ResponseEntity<Object>
@@ -155,18 +155,21 @@ sequenceDiagram
     participant QuestionLikesRepository
 
     Client->>QuestionController: likeQuestion(userId, questionId)
-    QuestionController->>QuestionLikesService: likeQuestion(userId, questionId)
+    QuestionController->>QuestionLikesService: isLikedByUser(userId, questionId)
     QuestionLikesService->>QuestionLikesRepository: findByUserIdAndQuestionId(userId, questionId)
     QuestionLikesRepository-->>QuestionLikesService: Optional<QuestionLikes>
+    QuestionLikesService-->>QuestionController: Boolean
     
-    alt 좋아요가 없는 경우
+    alt not liked yet
+        QuestionController->>QuestionLikesService: likeQuestion(userId, questionId)
         QuestionLikesService->>QuestionLikesRepository: save(questionLikes)
         QuestionLikesRepository-->>QuestionLikesService: QuestionLikes
         QuestionLikesService-->>QuestionController: QuestionLikes
-    else 좋아요가 있는 경우
+    else already liked
+        QuestionController->>QuestionLikesService: unlikeQuestion(userId, questionId)
         QuestionLikesService->>QuestionLikesRepository: delete(questionLikes)
         QuestionLikesRepository-->>QuestionLikesService: void
-        QuestionLikesService-->>QuestionController: "unliked"
+        QuestionLikesService-->>QuestionController: void
     end
     
     QuestionController-->>Client: ResponseEntity<Object>
@@ -188,7 +191,7 @@ sequenceDiagram
     ActivityController->>ActivityService: getUserActivity(userId)
     
     par 병렬 조회
-        ActivityService->>QuestionRepository: findByMyBookUserIdOrderByCreatedAtDesc(userId)
+        ActivityService->>QuestionRepository: findByMyBookUserId(userId)
         QuestionRepository-->>ActivityService: List<Question>
     and
         ActivityService->>AnswerRepository: findByUserIdOrderByCreatedAtDesc(userId)
@@ -266,7 +269,7 @@ sequenceDiagram
         AnswerService-->>AnswerController: Answer
     else no templates
         AiAnswerTemplateService-->>AIService: empty List
-        AIService-->>AnswerController: throw NoTemplateException
+        AIService-->>AnswerController: generation failed
     end
     
     AnswerController-->>Client: ResponseEntity<Object>
@@ -291,7 +294,7 @@ sequenceDiagram
         MyBookRepository-->>MyBookService: MyBook
         MyBookService-->>BookController: MyBook
     else myBook not found
-        MyBookService-->>BookController: throw MyBookNotFoundException
+        MyBookService-->>BookController: update failed
     end
     
     BookController-->>Client: ResponseEntity<Object>
@@ -306,7 +309,7 @@ sequenceDiagram
     participant BookShelfService
     participant BookShelfRepository
 
-    Client->>BookController: createBookShelf(userId, shelfName, domain)
+    Client->>BookController: manageShelves(userId, shelfName, domain)
     BookController->>BookShelfService: createShelf(userId, shelfName, domain)
     BookShelfService->>BookShelfRepository: save(bookShelf)
     BookShelfRepository-->>BookShelfService: BookShelf
