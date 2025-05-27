@@ -71,7 +71,39 @@ sequenceDiagram
     BookController-->>Client: ResponseEntity<Object>
 ```
 
-## 3. 질문 생성 (AI 템플릿 사용)
+## 3. 질문 작성
+
+```mermaid
+sequenceDiagram
+    actor Client
+    participant QuestionController
+    participant QuestionService
+    participant QuestionRepository
+    participant UserStatsService
+    participant UserStatsRepository
+
+    Client->>QuestionController: createQuestion(questionData)
+    QuestionController->>QuestionService: createQuestion(questionData)
+    QuestionService->>QuestionService: validateQuestion(questionData)
+    
+    alt validation passed
+        QuestionService->>QuestionRepository: save(question)
+        QuestionRepository-->>QuestionService: Question
+        QuestionService->>UserStatsService: incrementQuestionCount(userId)
+        UserStatsService->>UserStatsRepository: findByUserId(userId)
+        UserStatsRepository-->>UserStatsService: Optional<UserStats>
+        UserStatsService->>UserStatsRepository: save(userStats)
+        UserStatsRepository-->>UserStatsService: UserStats
+        UserStatsService-->>QuestionService: void
+        QuestionService-->>QuestionController: Question
+    else validation failed
+        QuestionService-->>QuestionController: validation error
+    end
+    
+    QuestionController-->>Client: ResponseEntity<Object>
+```
+
+## 4. AI 질문 생성
 
 ```mermaid
 sequenceDiagram
@@ -114,7 +146,7 @@ sequenceDiagram
     QuestionController-->>Client: ResponseEntity<Object>
 ```
 
-## 4. 답변 작성 및 알림 생성
+## 5. 답변 작성 및 알림 생성
 
 ```mermaid
 sequenceDiagram
@@ -145,7 +177,7 @@ sequenceDiagram
     AnswerController-->>Client: ResponseEntity<Object>
 ```
 
-## 5. 질문 좋아요/취소
+## 6. 질문 좋아요/취소
 
 ```mermaid
 sequenceDiagram
@@ -175,7 +207,7 @@ sequenceDiagram
     QuestionController-->>Client: ResponseEntity<Object>
 ```
 
-## 6. 내 활동 조회
+## 7. 내 활동 조회
 
 ```mermaid
 sequenceDiagram
@@ -208,7 +240,7 @@ sequenceDiagram
     ActivityController-->>Client: ResponseEntity<Object>
 ```
 
-## 7. 알림 조회 및 읽음 처리
+## 8. 알림 조회 및 읽음 처리
 
 ```mermaid
 sequenceDiagram
@@ -234,7 +266,7 @@ sequenceDiagram
     NotificationController-->>Client: ResponseEntity<Object>
 ```
 
-## 8. AI 답변 생성
+## 9. AI 답변 생성
 
 ```mermaid
 sequenceDiagram
@@ -275,7 +307,7 @@ sequenceDiagram
     AnswerController-->>Client: ResponseEntity<Object>
 ```
 
-## 9. 도서 상태 변경
+## 10. 도서 상태 변경
 
 ```mermaid
 sequenceDiagram
@@ -300,7 +332,7 @@ sequenceDiagram
     BookController-->>Client: ResponseEntity<Object>
 ```
 
-## 10. 서재 관리
+## 11. 서재 관리
 
 ```mermaid
 sequenceDiagram
